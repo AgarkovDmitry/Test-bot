@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "es5",
+      "es6",
+      "es7",
+      "es2017",
+      "dom"
+    ],
+    "moduleResolution": "node",
+    "rootDirs": [
+      "src",
+    ],
+    "baseUrl": "./src",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "allowJs": false,
+    "declaration": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "module": "commonjs",
+    "strictNullChecks": false,
+  },
+  "include": [
+    "./src/**/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "config"
+  ]
+}

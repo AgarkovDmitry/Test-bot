@@ -5,6 +5,8 @@ import IUser from './interfaces/user'
 import { getUserByPhoneNumber, getUserByTelegramId, attachTelegramIdToUser } from './data/users'
 import t from './locale'
 
+import './src/api/user-spreadshit'
+
 dotenv.config()
 const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {polling: true})
 
@@ -16,12 +18,12 @@ const requestContact = (id: number, message: string) => bot.sendMessage(id, mess
     'keyboard': [
       [{
         text: t('sendContact'),
-        request_contact: true
-      }]
-    ]
-  }
+        request_contact: true,
+      }],
+    ],
+  },
 }).then(() => new Promise(res => {
-  bot.once('contact', (msg) => {
+  bot.once('contact', msg => {
     const u = getUserByPhoneNumber(msg.contact.phone_number)
     if (!u) {
       /* handle case when user doesn't belong to system yet */
@@ -39,7 +41,7 @@ const sendSeasonPass = (user: IUser) => bot.sendMessage(
   t('seasonPass', user.seasonPass)
 )
 
-bot.onText(/^\/start/, (msg) => {
+bot.onText(/^\/start/, msg => {
   requestContact(msg.chat.id, t('contantRequired'))
   .then((user: IUser) => {
     bot.sendMessage(msg.chat.id, t('authComplete', { name: user.name }))
@@ -47,7 +49,7 @@ bot.onText(/^\/start/, (msg) => {
 })
 
 
-bot.onText(/^\/status/, (msg) => {
+bot.onText(/^\/status/, msg => {
   const user = getUserByTelegramId(msg.chat.id)
   if (user) {
     sendSeasonPass(user)

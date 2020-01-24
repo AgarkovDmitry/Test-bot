@@ -7,8 +7,8 @@ const users: IUser[] = [
     seasonPass: {
       availableTill: '01.02.2020',
       amountOfTraining: 10,
-    }
-  }
+    },
+  },
 ]
 
 export function getUserByPhoneNumber(phoneNumber: string) {

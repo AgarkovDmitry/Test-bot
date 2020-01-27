@@ -1,17 +1,36 @@
 import dotenv from 'dotenv'
-const GoogleSpreadsheet = require('google-spreadsheet')
+import GoogleSpreadsheet from 'google-spreadsheet'
 
 dotenv.config()
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_DRIVE_USERS_SPREADSHEET)
 
-const readInfo = () => {
+const readUsersRows = () => new Promise(res => {
   doc.useServiceAccountAuth(JSON.parse(process.env.GOOGLE_DRIVE_CREDENTIALS), () => {
     doc.getRows(1, (err, rows) => {
       console.log(rows)
+      res(rows)
     })
   })
-}
+})
 
-readInfo()
+export const readUserByPhone = (phone: string) =>
+  readUsersRows()
+  .then((rows: any[]) => {
+    return rows.find(row => `+${row.phone}` === phone)
+  })
 
-export default readInfo
+export const readUserByTelegramId = (telegramId: number) =>
+  readUsersRows()
+  .then((rows: any[]) => {
+    return rows.find(row => Number(row.telegramid) === telegramId)
+  })
+
+export const updateUserTelegramId = (phone: string, telegramId: number | string) =>
+  readUserByPhone(phone)
+  .then((async row => {
+    row.telegramId = telegramId
+    await row.save()
+    return row
+  }))
+
+export default readUsersRows

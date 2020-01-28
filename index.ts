@@ -1,77 +1,31 @@
-import TelegramBot from 'node-telegram-bot-api'
-import dotenv from 'dotenv'
-
-// import { getUserByPhoneNumber, getUserByTelegramId, attachTelegramIdToUser } from './data/users'
+import bot from './src/api/telegram-bot'
 import t from './src/locale'
 
-import { readUserByPhone, readUserByTelegramId, updateUserTelegramId } from './src/api/user-spreadshit'
+import withUser from './src/utils/with-user'
 
-dotenv.config()
-const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {polling: true})
+import authHandler from './src/handlers/auth'
+import bookingHandler from './src/handlers/booking'
+import contactHandler from './src/handlers/contact'
+import notFoundHandler from './src/handlers/not-found'
+import scheduleHandler from './src/handlers/schedule'
+import seasonPassHandler from './src/handlers/season-pass'
 
-const requestContact = (id: number, message: string) => new Promise(async res => {
-  await bot.sendMessage(id, message, {
-    reply_markup: {
-      one_time_keyboard: true,
-      resize_keyboard: true,
-      keyboard: [
-        [{
-          text: t('sendContact'),
-          request_contact: true,
-        }],
-      ],
-    },
-  })
+bot.onText(/^\/start/, authHandler)
 
-  bot.once('contact', async (msg: any) => {
-    if (msg.contact.user_id !== msg.chat.id) {
-      res(null)
-    }
+const messageHandlers = {
+  [t('menu.seasonPass')]: (msg: any) => withUser(msg, seasonPassHandler),
+  [t('menu.schedule')]: scheduleHandler,
+  [t('menu.booking')]: bookingHandler,
+}
 
-    const u = await readUserByPhone(msg.contact.phone_number)
-    if (!u) {
-      /* handle case when user doesn't belong to system yet */
-      bot.sendMessage(msg.contact.user_id, t('userNotFound'))
-      res(null)
-    } else {
-      await updateUserTelegramId(msg.contact.phone_number, msg.contact.user_id)
-      const user = await readUserByTelegramId(msg.contact.user_id)
-      bot.sendMessage(
-        msg.contact.user_id,
-        t('authComplete', { name: user.name }),
-        {
-          reply_markup: {
-            remove_keyboard: true,
-          },
-        }
-      )
+bot.once('contact', contactHandler)
 
-      res(user)
-    }
-  })
-})
-
-const sendSeasonPass = (user: any) => bot.sendMessage(
-  user.telegramid,
-  t('seasonPass', user)
-)
-
-bot.onText(/^\/start/, async (msg: any) => {
-  const user: any = await requestContact(msg.chat.id, t('contantRequired'))
-  if (user) {
-    bot.sendMessage(msg.chat.id, t('authComplete', { name: user.name }))
+bot.on('message', async msg => {
+  if (!msg.text || msg.text[0] === '/') {
+    return
   }
-})
 
+  const handler = messageHandlers[msg.text] || notFoundHandler
 
-bot.onText(/^\/status/, async(msg: any) => {
-  const user = await readUserByTelegramId(msg.chat.id)
-  if (user) {
-    sendSeasonPass(user)
-  } else {
-    const u: any = await requestContact(msg.chat.id, t('userNotAuthorized'))
-    if (u) {
-      sendSeasonPass(u)
-    }
-  }
+  handler(msg)
 })

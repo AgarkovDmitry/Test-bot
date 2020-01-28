@@ -7,7 +7,6 @@ const doc = new GoogleSpreadsheet(process.env.GOOGLE_DRIVE_USERS_SPREADSHEET)
 const readUsersRows = () => new Promise(res => {
   doc.useServiceAccountAuth(JSON.parse(process.env.GOOGLE_DRIVE_CREDENTIALS), () => {
     doc.getRows(1, (err, rows) => {
-      console.log(rows)
       res(rows)
     })
   })

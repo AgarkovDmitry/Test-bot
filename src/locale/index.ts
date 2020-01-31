@@ -4,10 +4,12 @@ const translations = {
   userNotAuthorized: 'Ви не авторизованi',
   sendContact: 'Вiдправити контактнi данi',
   seasonPass: 'У вас залишилось {{amountoftraining}} тренуваннь, срок дii до {{availabletill}}',
-  authComplete: 'Дякую {{name}}, тепер ви можете переглянути статус вашого абонементу та записуватись на тренування',
+  authComplete: 'Дякую {{name}} {{surname}}, тепер ви можете переглянути статус вашого абонементу та записуватись на тренування',
   'menu.seasonPass': 'Мой абонимент',
   'menu.schedule': 'Мои тренировки',
   'menu.booking': 'Записаться на тренировку',
+  'menu.yes': 'Так',
+  'menu.no': 'Нi',
 }
 
 export default function (token: string, params?) {

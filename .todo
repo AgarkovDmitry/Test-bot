@@ -5,3 +5,17 @@ View future trainings
       -> Back
       -> Cancel 
 
+
+Book training
+  -> Rent a trampoline
+    - Amount of treinees (1, 2, 3)
+    - Amount of trampolines (1, 2, 3)
+    - Gym (Berest, XH, Poch,XPark)
+
+    - Trainer (multi select)
+    - Date (multi select)
+    - Time (multi select)
+
+
+  -> Group training
+    -> List of options (name, trainer, date)

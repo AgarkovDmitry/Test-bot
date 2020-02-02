@@ -14,22 +14,36 @@ const readUsersRows = () => new Promise(res => {
 
 export const readUserByPhone = (phone: string) =>
   readUsersRows()
-  .then((rows: any[]) => {
-    return rows.find(row => `+38${row.phone.replace(/[\-() ]/gi, '')}` === phone)
-  })
+    .then((rows: any[]) => {
+      return rows.find(row => `+38${row.phone.replace(/[\-() ]/gi, '')}` === phone)
+    })
+
+export const readUsersByPhones = (phones: string[]) =>
+  readUsersRows()
+    .then((rows: any[]) => {
+      return phones.map(phone => {
+        const ph = phone.replace(/[\-() ]/gi, '')
+        const r = rows.find(r => !!r.phone.includes(ph))
+
+        return ({
+          phone,
+          telegramId: r ? r.telegramid : null,
+        })
+      })
+    })
 
 export const readUserByTelegramId = (telegramId: number) =>
   readUsersRows()
-  .then((rows: any[]) => {
-    return rows.find(row => Number(row.telegramid) === telegramId)
-  })
+    .then((rows: any[]) => {
+      return rows.find(row => Number(row.telegramid) === telegramId)
+    })
 
 export const updateUserTelegramId = (phone: string, telegramId: number | string) =>
   readUserByPhone(phone)
-  .then((async row => {
-    row.telegramId = telegramId
-    await row.save()
-    return row
-  }))
+    .then((async row => {
+      row.telegramId = telegramId
+      await row.save()
+      return row
+    }))
 
 export default readUsersRows

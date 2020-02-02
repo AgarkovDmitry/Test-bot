@@ -10,6 +10,20 @@ const translations = {
   'menu.booking': 'Записаться на тренировку',
   'menu.yes': 'Так',
   'menu.no': 'Нi',
+
+  'reminder.greetings': 'Добрий день, {{name}}! Нагадуэмо, у вас заняття завтра({{date}}):',
+  'reminder.question': 'Все вiрно?',
+  'reminder.hours': 'В {{time}}',
+  'reminder.gym': 'на {{gym}}',
+  'reminder.trampolines.1': '1 батут',
+  'reminder.trampolines.2': '2 батути',
+  'reminder.trampolines.3': '3 батути',
+  'reminder.trampolines.4': '4 батути',
+  'reminder.trampolines.5': '5 батутiв',
+  'reminder.trampolines.6': '6 батутiв',
+  'reminder.trampolines.7': '7 батутiв',
+  'reminder.trainer.true': 'Ваш тренер {{trainer}}',
+  'reminder.trainer.false': 'Без тренера',
 }
 
 export default function (token: string, params?) {

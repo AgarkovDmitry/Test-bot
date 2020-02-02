@@ -42,7 +42,7 @@ const readScheduleRows = () => new Promise(res => {
             trainer: cells.find(c => c.col === trainerColumn)?.value,
             trainee: cells.find(c => c.col === traineeColumn)?.value,
             startTime: cells.find(c => c.col === minCol)?.value,
-            id: i,
+            trampolineId: i,
           })
         }
 
@@ -88,10 +88,8 @@ const readdScheduleByDate = async(date = '31.01') => {
   })
 
   const trainings = _.uniqWith(_.flatten(trampolines),
-    (a: any, b: any) => a.id === b.id && a.startTime === b.startTime && a.trainee === b.trainee
+    (a: any, b: any) => a.trampolineId === b.trampolineId && a.startTime === b.startTime && a.trainee === b.trainee
   )
-
-  console.log(trainings)
 
   return trainings
 }

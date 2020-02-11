@@ -19,3 +19,16 @@ Book training
 
   -> Group training
     -> List of options (name, trainer, date)
+
+
+TrainingRecord:
+  - gym: string
+  - trainer: string
+  - trampolines: []
+  - trainees: []
+  - startTime: string
+  - endTime: string
+  - duration: string
+  - note: string
+  - status: reserved | confirmed | declined | passed
+  - type: TRAMP_RENT | TRAMP_RENT_AND_TRAINER | GROUP | EVENT | GYM_RENT

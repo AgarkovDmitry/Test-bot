@@ -15,7 +15,7 @@ const readUsersRows = () => new Promise(res => {
 export const readUserByPhone = (phone: string) =>
   readUsersRows()
     .then((rows: any[]) => {
-      return rows.find(row => `+38${row.phone.replace(/[\-() ]/gi, '')}` === phone)
+      return rows.find(row => row.phone === `+${phone}`)
     })
 
 export const readUsersByPhones = (phones: string[]) =>
